@@ -3,7 +3,7 @@ from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from pathlib import Path
 
-from backend.model import forecast_demand
+from model import forecast_demand
 
 import pandas as pd
 import io
