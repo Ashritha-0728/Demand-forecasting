@@ -13,8 +13,8 @@ import json
 app = FastAPI(title="Retail Demand Forecasting")
 
 
-BASE_DIR = Path(__file__).resolve().parent.parent
-FRONTEND_DIR = BASE_DIR / "frontend"
+BASE_DIR = Path(__file__).resolve().parent
+FRONTEND_DIR = BASE_DIR 
 
 # File used to permanently store manually recorded sales
 RECORDED_SALES_FILE = BASE_DIR / "recorded_sales.json"
