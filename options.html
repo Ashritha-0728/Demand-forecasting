@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Retail Demand Forecasting</title>
+
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+
+    <main class="options-page">
+
+        <div class="options-header">
+
+            <button class="back-button" onclick="goBack()">
+                ← Back
+            </button>
+
+            <h1>What would you like to do?</h1>
+
+            <p>
+                Choose an option to get started.
+            </p>
+
+        </div>
+
+
+        <section class="options-grid">
+
+            <!-- Upload Sales -->
+
+            <div class="option-card" onclick="openUpload()">
+
+                <div class="option-icon">📊</div>
+
+                <h2>Upload my sales</h2>
+
+                <p>
+                    I already have my sales records in a file.
+                </p>
+
+                <span class="option-link">
+                    Continue →
+                </span>
+
+            </div>
+
+
+            <!-- Record Sales -->
+
+            <div class="option-card" onclick="openRecord()">
+
+                <div class="option-icon">📝</div>
+
+                <h2>Enter my daily sales</h2>
+
+                <p>
+                    I want to record my sales here every day.
+                </p>
+
+                <span class="option-link">
+                    Continue →
+                </span>
+
+            </div>
+
+
+            <!-- Quick Forecast -->
+
+            <div class="option-card" onclick="openQuickEstimate()">
+
+                <div class="option-icon">⚡</div>
+
+                <h2>Get a quick forecast</h2>
+
+                <p>
+                    I need a demand estimate right now.
+                </p>
+
+                <span class="option-link">
+                    Continue →
+                </span>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script>
+
+        function goBack() {
+            window.location.href = "/";
+        }
+
+        function openUpload() {
+            window.location.href = "/upload";
+        }
+
+        function openRecord() {
+            window.location.href = "/record";
+        }
+
+        function openQuickEstimate() {
+            window.location.href = "/quick-estimate";
+        }
+
+    </script>
+
+</body>
+</html>

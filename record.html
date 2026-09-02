@@ -1,0 +1,1777 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Create Your Dataset</title>
+
+    <link
+        rel="stylesheet"
+        href="/static/style.css">
+
+    <style>
+
+        .record-page {
+            min-height: 100vh;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 30px 70px;
+        }
+
+        .record-content {
+            max-width: 850px;
+            margin: 40px auto 0;
+        }
+
+        .record-header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .record-header h1 {
+            font-size: 40px;
+            letter-spacing: -1.5px;
+            margin-bottom: 14px;
+        }
+
+        .record-header p {
+            color: #666;
+            line-height: 1.6;
+            font-size: 16px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .record-card {
+            background: white;
+            border: 1px solid #e2e2df;
+            border-radius: 18px;
+            padding: 30px;
+            margin-bottom: 25px;
+        }
+
+        .record-card h2 {
+            margin-bottom: 8px;
+            font-size: 21px;
+        }
+
+        .record-description {
+            color: #777;
+            font-size: 14px;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        /* =========================
+           FORM
+        ========================= */
+
+        .record-form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .record-field {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .record-field label {
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .record-field small {
+            color: #888;
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+
+        .record-field input {
+            width: 100%;
+            height: 46px;
+            padding: 0 14px;
+            border: 1px solid #d5d5d0;
+            border-radius: 9px;
+            background: white;
+            color: #222;
+            font-size: 15px;
+            box-sizing: border-box;
+        }
+
+        .record-field input:focus {
+            outline: none;
+            border-color: #222;
+        }
+
+        .add-sale-area {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 25px;
+        }
+
+        .add-sale-button {
+            margin-top: 0;
+            padding: 13px 24px;
+        }
+
+        /* =========================
+           MESSAGE
+        ========================= */
+
+        .message {
+            display: none;
+            padding: 13px 15px;
+            border-radius: 9px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .message.success {
+            background: #f1f7f1;
+            border: 1px solid #cddfcd;
+            color: #376337;
+        }
+
+        .message.error {
+            background: #fff0f0;
+            border: 1px solid #e4c7c7;
+            color: #9a3030;
+        }
+
+        /* =========================
+           DATASET SUMMARY
+        ========================= */
+
+        .dataset-summary {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-top: 22px;
+            margin-bottom: 25px;
+        }
+
+        .summary-box {
+            border: 1px solid #e4e4df;
+            border-radius: 12px;
+            padding: 17px 14px;
+            background: #fafaf8;
+        }
+
+        .summary-label {
+            color: #777;
+            font-size: 12px;
+            margin-bottom: 7px;
+        }
+
+        .summary-value {
+            color: #222;
+            font-size: 23px;
+            font-weight: 600;
+        }
+
+        /* =========================
+           READINESS
+        ========================= */
+
+        .readiness-box {
+            border: 1px solid #deded8;
+            border-radius: 12px;
+            padding: 18px 20px;
+            margin-bottom: 25px;
+            background: #fafaf8;
+        }
+
+        .readiness-title {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #222;
+        }
+
+        .readiness-text {
+            font-size: 13px;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .readiness-progress {
+            height: 7px;
+            background: #e7e7e2;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 14px;
+        }
+
+        .readiness-progress-bar {
+            height: 100%;
+            background: #222;
+            border-radius: 10px;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* =========================
+           RECORDS HEADER
+        ========================= */
+
+        .records-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .records-count {
+            color: #777;
+            font-size: 14px;
+        }
+
+        .clear-button {
+            margin: 0;
+            padding: 9px 15px;
+            background: white;
+            color: #555;
+            border: 1px solid #d5d5d0;
+            font-size: 13px;
+        }
+
+        .clear-button:hover {
+            background: #f5f5f2;
+            opacity: 1;
+            transform: none;
+        }
+
+        /* =========================
+           EMPTY STATE
+        ========================= */
+
+        .empty-state {
+            text-align: center;
+            padding: 45px 20px;
+            color: #888;
+            border: 1px dashed #d8d8d3;
+            border-radius: 12px;
+            line-height: 1.6;
+        }
+
+        .empty-state strong {
+            display: block;
+            color: #555;
+            margin-bottom: 7px;
+        }
+
+        /* =========================
+           TABLE
+        ========================= */
+
+        .table-container {
+            overflow-x: auto;
+            border: 1px solid #e5e5e0;
+            border-radius: 10px;
+        }
+
+        .records-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        .records-table th,
+        .records-table td {
+            padding: 13px 14px;
+            text-align: left;
+            border-bottom: 1px solid #eeeeea;
+            white-space: nowrap;
+        }
+
+        .records-table th {
+            background: #f7f7f4;
+            font-weight: 600;
+        }
+
+        .records-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .delete-button {
+            margin: 0;
+            padding: 6px 10px;
+            background: white;
+            color: #777;
+            border: 1px solid #ddd;
+            font-size: 12px;
+        }
+
+        .delete-button:hover {
+            background: #f5f5f2;
+            color: #222;
+            opacity: 1;
+            transform: none;
+        }
+
+        /* =========================
+           FORECAST
+        ========================= */
+
+        .forecast-area {
+            text-align: center;
+            margin-top: 25px;
+        }
+
+        .forecast-button {
+            margin-top: 0;
+            padding: 14px 26px;
+        }
+
+        .forecast-note {
+            margin-top: 10px;
+            color: #888;
+            font-size: 12px;
+        }
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 700px) {
+
+            .record-page {
+                padding: 25px 18px 50px;
+            }
+
+            .record-header h1 {
+                font-size: 32px;
+            }
+
+            .record-form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .record-card {
+                padding: 22px;
+            }
+
+            .records-header {
+                align-items: flex-start;
+                gap: 15px;
+                flex-direction: column;
+            }
+
+            .dataset-summary {
+                grid-template-columns: 1fr 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<main class="record-page">
+
+
+    <button
+        class="back-button"
+        onclick="goBack()">
+
+        ← Back
+
+    </button>
+
+
+    <div class="record-content">
+
+
+        <!-- =========================
+             HEADER
+        ========================== -->
+
+        <div class="record-header">
+
+            <h1>
+                Create your own dataset
+            </h1>
+
+            <p>
+                Record your daily sales directly on the website.
+                You do not need an existing CSV or Excel file.
+                Keep adding your sales each day to build historical
+                data for demand forecasting.
+            </p>
+
+        </div>
+
+
+        <!-- =========================
+             MESSAGE
+        ========================== -->
+
+        <div
+            id="message"
+            class="message">
+        </div>
+
+
+        <!-- =========================
+             SALES FORM
+        ========================== -->
+
+        <div class="record-card">
+
+            <h2>
+                Add a sales record
+            </h2>
+
+            <p class="record-description">
+                Enter how many units of a product were sold
+                at your store on a particular day.
+            </p>
+
+
+            <div class="record-form-grid">
+
+
+                <!-- DATE -->
+
+                <div class="record-field">
+
+                    <label for="date">
+                        Date
+                    </label>
+
+                    <small>
+                        When were these sales made?
+                    </small>
+
+                    <input
+                        type="date"
+                        id="date">
+
+                </div>
+
+
+                <!-- STORE -->
+
+                <div class="record-field">
+
+                    <label for="store">
+                        Store
+                    </label>
+
+                    <small>
+                        Enter your store or shop name.
+                    </small>
+
+                    <input
+                        type="text"
+                        id="store"
+                        placeholder="e.g. Main Store">
+
+                </div>
+
+
+                <!-- PRODUCT -->
+
+                <div class="record-field">
+
+                    <label for="product">
+                        Product
+                    </label>
+
+                    <small>
+                        Enter the product name.
+                    </small>
+
+                    <input
+                        type="text"
+                        id="product"
+                        placeholder="e.g. Rice">
+
+                </div>
+
+
+                <!-- QUANTITY -->
+
+                <div class="record-field">
+
+                    <label for="quantity">
+                        Quantity sold
+                    </label>
+
+                    <small>
+                        Number of units sold.
+                    </small>
+
+                    <input
+                        type="number"
+                        id="quantity"
+                        min="0"
+                        step="any"
+                        placeholder="e.g. 25">
+
+                </div>
+
+
+            </div>
+
+
+            <div class="add-sale-area">
+
+                <button
+                    class="add-sale-button"
+                    id="add-sale-button"
+                    onclick="addSale()">
+
+                    Add Sale →
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             DATASET SUMMARY
+        ========================== -->
+
+        <div
+            class="record-card"
+            id="dataset-card"
+            style="display:none;">
+
+            <h2>
+                Your dataset
+            </h2>
+
+            <p class="record-description">
+                A quick overview of the sales data you have
+                collected so far.
+            </p>
+
+
+            <div class="dataset-summary">
+
+
+                <div class="summary-box">
+
+                    <div class="summary-label">
+                        Sales entries
+                    </div>
+
+                    <div
+                        class="summary-value"
+                        id="summary-records">
+                        0
+                    </div>
+
+                </div>
+
+
+                <div class="summary-box">
+
+                    <div class="summary-label">
+                        Days of data
+                    </div>
+
+                    <div
+                        class="summary-value"
+                        id="summary-days">
+                        0
+                    </div>
+
+                </div>
+
+
+                <div class="summary-box">
+
+                    <div class="summary-label">
+                        Products
+                    </div>
+
+                    <div
+                        class="summary-value"
+                        id="summary-products">
+                        0
+                    </div>
+
+                </div>
+
+
+                <div class="summary-box">
+
+                    <div class="summary-label">
+                        Total units
+                    </div>
+
+                    <div
+                        class="summary-value"
+                        id="summary-total">
+                        0
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <div class="readiness-box">
+
+                <div
+                    class="readiness-title"
+                    id="readiness-title">
+
+                    Forecast readiness
+
+                </div>
+
+
+                <div
+                    class="readiness-text"
+                    id="readiness-text">
+
+                    Start recording sales to build your dataset.
+
+                </div>
+
+
+                <div class="readiness-progress">
+
+                    <div
+                        class="readiness-progress-bar"
+                        id="readiness-bar">
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             RECORDED SALES
+        ========================== -->
+
+        <div class="record-card">
+
+            <div class="records-header">
+
+                <div>
+
+                    <h2>
+                        Your recorded sales
+                    </h2>
+
+                    <div
+                        class="records-count"
+                        id="records-count">
+
+                        0 records
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    class="clear-button"
+                    onclick="clearAllSales()">
+
+                    Clear all
+
+                </button>
+
+            </div>
+
+
+            <div id="records-container">
+
+                <div class="empty-state">
+
+                    <strong>
+                        No sales recorded yet
+                    </strong>
+
+                    Add your first sales record
+                    using the form above.
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="forecast-area"
+                class="forecast-area"
+                style="display:none;">
+
+                <button
+                    class="forecast-button"
+                    onclick="goToRecordedForecast()">
+
+                    Forecast from my sales →
+
+                </button>
+
+                <div class="forecast-note">
+
+                    Continue recording sales every day
+                    for a stronger historical dataset.
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+</main>
+
+
+<script>
+
+
+/* ============================================================
+   SET TODAY'S DATE
+============================================================ */
+
+function setToday() {
+
+    const today =
+        new Date();
+
+
+    const year =
+        today.getFullYear();
+
+
+    const month =
+        String(
+            today.getMonth() + 1
+        ).padStart(2, "0");
+
+
+    const day =
+        String(
+            today.getDate()
+        ).padStart(2, "0");
+
+
+    const todayString =
+        `${year}-${month}-${day}`;
+
+
+    const dateInput =
+        document.getElementById("date");
+
+
+    dateInput.value =
+        todayString;
+
+
+    /*
+     * Future dates should not be allowed.
+     */
+
+    dateInput.max =
+        todayString;
+
+}
+
+
+/* ============================================================
+   ADD SALE
+============================================================ */
+
+async function addSale() {
+
+    const date =
+        document.getElementById(
+            "date"
+        ).value.trim();
+
+
+    const store =
+        document.getElementById(
+            "store"
+        ).value.trim();
+
+
+    const product =
+        document.getElementById(
+            "product"
+        ).value.trim();
+
+
+    const quantity =
+        document.getElementById(
+            "quantity"
+        ).value;
+
+
+    /* DATE */
+
+    if (!date) {
+
+        showMessage(
+            "Please select a date.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    /*
+     * Do not allow future dates.
+     */
+
+    const selectedDate =
+        new Date(date + "T00:00:00");
+
+
+    const today =
+        new Date();
+
+
+    today.setHours(
+        0, 0, 0, 0
+    );
+
+
+    if (selectedDate > today) {
+
+        showMessage(
+            "Sales date cannot be in the future.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    /* STORE */
+
+    if (!store) {
+
+        showMessage(
+            "Please enter your store name.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    /* PRODUCT */
+
+    if (!product) {
+
+        showMessage(
+            "Please enter a product name.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    /* QUANTITY */
+
+    if (
+        quantity === "" ||
+        quantity === null
+    ) {
+
+        showMessage(
+            "Please enter the quantity sold.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    const numericQuantity =
+        Number(quantity);
+
+
+    if (
+        !Number.isFinite(
+            numericQuantity
+        )
+    ) {
+
+        showMessage(
+            "Please enter a valid quantity.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    if (
+        numericQuantity < 0
+    ) {
+
+        showMessage(
+            "Quantity cannot be negative.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    const button =
+        document.getElementById(
+            "add-sale-button"
+        );
+
+
+    button.disabled = true;
+
+    button.textContent =
+        "Saving...";
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/record-sale",
+                {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+
+                        date: date,
+
+                        store: store,
+
+                        product: product,
+
+                        quantity:
+                            numericQuantity
+
+                    })
+
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                data.error ||
+                "Could not save the sale."
+            );
+
+        }
+
+
+        showMessage(
+            "Sale recorded successfully.",
+            "success"
+        );
+
+
+        /*
+         * Keep store and product values.
+         * This makes entering several products
+         * or quantities faster.
+         */
+
+        document.getElementById(
+            "quantity"
+        ).value = "";
+
+
+        await loadSales();
+
+
+        document.getElementById(
+            "quantity"
+        ).focus();
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        showMessage(
+            error.message,
+            "error"
+        );
+
+    }
+
+    finally {
+
+        button.disabled = false;
+
+        button.textContent =
+            "Add Sale →";
+
+    }
+
+}
+
+
+/* ============================================================
+   LOAD SALES
+============================================================ */
+
+async function loadSales() {
+
+    try {
+
+        const response =
+            await fetch(
+                "/recorded-sales"
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                data.error ||
+                "Could not load sales."
+            );
+
+        }
+
+
+        displaySales(
+            Array.isArray(data)
+                ? data
+                : []
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        showMessage(
+            "Could not load your recorded sales.",
+            "error"
+        );
+
+    }
+
+}
+
+
+/* ============================================================
+   DISPLAY SALES
+============================================================ */
+
+function displaySales(sales) {
+
+    const container =
+        document.getElementById(
+            "records-container"
+        );
+
+
+    const count =
+        document.getElementById(
+            "records-count"
+        );
+
+
+    const forecastArea =
+        document.getElementById(
+            "forecast-area"
+        );
+
+
+    const datasetCard =
+        document.getElementById(
+            "dataset-card"
+        );
+
+
+    /* =========================
+       BASIC COUNT
+    ========================== */
+
+    count.textContent =
+        `${sales.length} ${
+            sales.length === 1
+            ? "record"
+            : "records"
+        }`;
+
+
+    /* =========================
+       EMPTY DATASET
+    ========================== */
+
+    if (sales.length === 0) {
+
+        container.innerHTML = `
+
+            <div class="empty-state">
+
+                <strong>
+                    No sales recorded yet
+                </strong>
+
+                Add your first sales record
+                using the form above.
+
+            </div>
+
+        `;
+
+
+        forecastArea.style.display =
+            "none";
+
+
+        datasetCard.style.display =
+            "none";
+
+
+        updateDatasetSummary([]);
+
+
+        return;
+
+    }
+
+
+    /* =========================
+       SHOW DATASET INFORMATION
+    ========================== */
+
+    datasetCard.style.display =
+        "block";
+
+
+    forecastArea.style.display =
+        "block";
+
+
+    updateDatasetSummary(
+        sales
+    );
+
+
+    /* =========================
+       TABLE
+    ========================== */
+
+    let rows = "";
+
+
+    sales.forEach(
+        function(sale, index) {
+
+            rows += `
+
+                <tr>
+
+                    <td>
+                        ${escapeHtml(
+                            sale.date
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapeHtml(
+                            sale.store
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapeHtml(
+                            sale.product
+                        )}
+                    </td>
+
+                    <td>
+                        ${formatNumber(
+                            sale.quantity
+                        )}
+                    </td>
+
+                    <td>
+
+                        <button
+                            class="delete-button"
+                            onclick="deleteSale(${index})">
+
+                            Delete
+
+                        </button>
+
+                    </td>
+
+                </tr>
+
+            `;
+
+        }
+    );
+
+
+    container.innerHTML = `
+
+        <div class="table-container">
+
+            <table class="records-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Date</th>
+
+                        <th>Store</th>
+
+                        <th>Product</th>
+
+                        <th>Quantity</th>
+
+                        <th>Action</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    ${rows}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    `;
+
+}
+
+
+/* ============================================================
+   DATASET SUMMARY
+============================================================ */
+
+function updateDatasetSummary(sales) {
+
+    const records =
+        sales.length;
+
+
+    const uniqueDates =
+        new Set(
+            sales.map(
+                sale => sale.date
+            )
+        ).size;
+
+
+    const uniqueProducts =
+        new Set(
+            sales.map(
+                sale =>
+                    String(
+                        sale.product
+                    ).trim().toLowerCase()
+            )
+        ).size;
+
+
+    const totalUnits =
+        sales.reduce(
+            function(total, sale) {
+
+                const quantity =
+                    Number(
+                        sale.quantity
+                    );
+
+
+                if (
+                    Number.isFinite(
+                        quantity
+                    )
+                ) {
+
+                    return total + quantity;
+
+                }
+
+
+                return total;
+
+            },
+            0
+        );
+
+
+    document.getElementById(
+        "summary-records"
+    ).textContent =
+        records;
+
+
+    document.getElementById(
+        "summary-days"
+    ).textContent =
+        uniqueDates;
+
+
+    document.getElementById(
+        "summary-products"
+    ).textContent =
+        uniqueProducts;
+
+
+    document.getElementById(
+        "summary-total"
+    ).textContent =
+        formatNumber(
+            totalUnits
+        );
+
+
+    updateReadiness(
+        uniqueDates
+    );
+
+}
+
+
+/* ============================================================
+   FORECAST READINESS
+============================================================ */
+
+function updateReadiness(days) {
+
+    const title =
+        document.getElementById(
+            "readiness-title"
+        );
+
+
+    const text =
+        document.getElementById(
+            "readiness-text"
+        );
+
+
+    const bar =
+        document.getElementById(
+            "readiness-bar"
+        );
+
+
+    /*
+     * 0 days
+     */
+
+    if (days === 0) {
+
+        title.textContent =
+            "Forecast readiness";
+
+
+        text.textContent =
+            "Start recording sales to build your dataset.";
+
+
+        bar.style.width =
+            "0%";
+
+
+        return;
+
+    }
+
+
+    /*
+     * 1–6 days
+     */
+
+    if (days < 7) {
+
+        title.textContent =
+            "Very limited data";
+
+
+        text.textContent =
+            `You have ${days} day${
+                days === 1 ? "" : "s"
+            } of sales data. You can generate a baseline estimate, but more historical data is strongly recommended.`;
+
+
+        bar.style.width =
+            `${Math.max(
+                8,
+                (days / 28) * 100
+            )}%`;
+
+
+        return;
+
+    }
+
+
+    /*
+     * 7–27 days
+     */
+
+    if (days < 28) {
+
+        title.textContent =
+            "Limited historical data";
+
+
+        const remaining =
+            28 - days;
+
+
+        text.textContent =
+            `You have ${days} days of sales data. A limited-history forecast is available. Add at least ${remaining} more day${
+                remaining === 1 ? "" : "s"
+            } for stronger historical coverage.`;
+
+
+        bar.style.width =
+            `${(days / 28) * 100}%`;
+
+
+        return;
+
+    }
+
+
+    /*
+     * 28+ days
+     */
+
+    title.textContent =
+        "Good historical coverage";
+
+
+    text.textContent =
+        `You have ${days} days of sales data. Your dataset has enough historical coverage for the full forecasting method.`;
+
+
+    bar.style.width =
+        "100%";
+
+}
+
+
+/* ============================================================
+   DELETE SALE
+============================================================ */
+
+async function deleteSale(index) {
+
+    const confirmed =
+        confirm(
+            "Delete this sales record?"
+        );
+
+
+    if (!confirmed) {
+
+        return;
+
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                `/recorded-sales/${index}`,
+                {
+                    method: "DELETE"
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                data.error ||
+                "Could not delete the record."
+            );
+
+        }
+
+
+        await loadSales();
+
+
+        showMessage(
+            "Sales record deleted.",
+            "success"
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        showMessage(
+            error.message,
+            "error"
+        );
+
+    }
+
+}
+
+
+/* ============================================================
+   CLEAR ALL SALES
+============================================================ */
+
+async function clearAllSales() {
+
+    const confirmed =
+        confirm(
+            "Are you sure you want to delete all recorded sales?"
+        );
+
+
+    if (!confirmed) {
+
+        return;
+
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/recorded-sales",
+                {
+                    method: "DELETE"
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                data.error ||
+                "Could not clear the records."
+            );
+
+        }
+
+
+        await loadSales();
+
+
+        showMessage(
+            "All recorded sales have been cleared.",
+            "success"
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        showMessage(
+            error.message,
+            "error"
+        );
+
+    }
+
+}
+
+
+/* ============================================================
+   GO TO RECORDED FORECAST
+============================================================ */
+
+function goToRecordedForecast() {
+
+    window.location.href =
+        "/recorded-forecast";
+
+}
+
+
+/* ============================================================
+   MESSAGE
+============================================================ */
+
+function showMessage(
+    text,
+    type
+) {
+
+    const message =
+        document.getElementById(
+            "message"
+        );
+
+
+    message.textContent =
+        text;
+
+
+    message.className =
+        `message ${type}`;
+
+
+    message.style.display =
+        "block";
+
+
+    setTimeout(
+        function() {
+
+            message.style.display =
+                "none";
+
+        },
+        3500
+    );
+
+}
+
+
+/* ============================================================
+   ESCAPE HTML
+============================================================ */
+
+function escapeHtml(value) {
+
+    const div =
+        document.createElement(
+            "div"
+        );
+
+
+    div.textContent =
+        value ?? "";
+
+
+    return div.innerHTML;
+
+}
+
+
+/* ============================================================
+   FORMAT NUMBER
+============================================================ */
+
+function formatNumber(value) {
+
+    const number =
+        Number(value);
+
+
+    if (
+        !Number.isFinite(number)
+    ) {
+
+        return "0";
+
+    }
+
+
+    return number.toLocaleString(
+        "en-IN",
+        {
+            maximumFractionDigits: 2
+        }
+    );
+
+}
+
+
+/* ============================================================
+   BACK
+============================================================ */
+
+function goBack() {
+
+    window.location.href =
+        "/options";
+
+}
+
+
+/* ============================================================
+   START
+============================================================ */
+
+setToday();
+
+loadSales();
+
+</script>
+
+
+</body>
+
+</html>
