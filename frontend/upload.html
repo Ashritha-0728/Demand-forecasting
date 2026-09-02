@@ -1,0 +1,502 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Upload Sales Data</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #f7f7f4;
+            color: #222;
+            font-family: Arial, sans-serif;
+        }
+
+        .page {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 32px 30px 70px;
+        }
+
+        .back {
+            border: none;
+            background: none;
+            padding: 0;
+            font-size: 16px;
+            color: #666;
+            cursor: pointer;
+        }
+
+        .back:hover {
+            color: #222;
+        }
+
+        .header {
+            margin-top: 48px;
+            margin-bottom: 35px;
+        }
+
+        .header h1 {
+            margin: 0 0 12px;
+            font-size: 42px;
+            line-height: 1.1;
+            letter-spacing: -1.5px;
+        }
+
+        .header p {
+            margin: 0;
+            color: #777;
+            font-size: 17px;
+            line-height: 1.5;
+        }
+
+        .card {
+            width: 100%;
+            background: white;
+            border: 1px solid #dfdfda;
+            border-radius: 16px;
+            padding: 32px;
+        }
+
+        .card h2 {
+            margin: 0 0 8px;
+            font-size: 23px;
+        }
+
+        .description {
+            margin: 0 0 25px;
+            color: #777;
+            font-size: 15px;
+        }
+
+        .upload-box {
+            width: 100%;
+            min-height: 250px;
+            border: 2px dashed #d1d1cc;
+            border-radius: 13px;
+            background: #fafaf8;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            text-align: center;
+            cursor: pointer;
+
+            transition: background 0.2s, border-color 0.2s;
+        }
+
+        .upload-box:hover {
+            background: #f5f5f2;
+            border-color: #999;
+        }
+
+        .upload-icon {
+            font-size: 36px;
+            margin-bottom: 16px;
+        }
+
+        .upload-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .upload-subtitle {
+            color: #888;
+            font-size: 14px;
+        }
+
+        #file-input {
+            display: none;
+        }
+
+        .selected-file {
+            display: none;
+            margin-top: 18px;
+            padding: 15px 17px;
+            border-radius: 9px;
+            background: #f3f3ef;
+            font-size: 14px;
+        }
+
+        .selected-file strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .file-name {
+            color: #666;
+            word-break: break-word;
+        }
+
+        .info {
+            margin-top: 20px;
+            padding: 15px 17px;
+            border-radius: 9px;
+            background: #f5f5f1;
+            color: #666;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .error {
+            display: none;
+            margin-top: 18px;
+            padding: 14px 16px;
+            border-radius: 9px;
+            background: #fff0f0;
+            border: 1px solid #e4c7c7;
+            color: #9a3030;
+            font-size: 14px;
+        }
+
+        .loading {
+            display: none;
+            margin-top: 18px;
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .button-area {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 25px;
+        }
+
+        .continue {
+            border: none;
+            border-radius: 9px;
+            padding: 14px 25px;
+            background: #222;
+            color: white;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .continue:hover {
+            background: #333;
+        }
+
+        .continue:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+        }
+
+        @media (max-width: 650px) {
+
+            .page {
+                padding: 25px 18px 50px;
+            }
+
+            .header h1 {
+                font-size: 32px;
+            }
+
+            .card {
+                padding: 22px;
+            }
+
+            .upload-box {
+                min-height: 220px;
+            }
+        }
+    </style>
+</head>
+
+
+<body>
+
+<div class="page">
+
+    <button
+        class="back"
+        onclick="goBack()">
+        ← Back
+    </button>
+
+
+    <div class="header">
+
+        <h1>
+            Upload your sales data
+        </h1>
+
+        <p>
+            Upload the sales file you already have.
+            We'll check the data and help you prepare it for forecasting.
+        </p>
+
+    </div>
+
+
+    <div class="card">
+
+        <h2>
+            Your sales file
+        </h2>
+
+        <p class="description">
+            You can upload a CSV or Excel file containing your previous sales records.
+        </p>
+
+
+        <!-- Upload box -->
+
+        <label
+            class="upload-box"
+            for="file-input">
+
+            <div class="upload-icon">
+                ↑
+            </div>
+
+            <div class="upload-title">
+                Choose your sales file
+            </div>
+
+            <div class="upload-subtitle">
+                CSV, XLS or XLSX files
+            </div>
+
+        </label>
+
+
+        <input
+            id="file-input"
+            type="file"
+            accept=".csv,.xls,.xlsx">
+
+
+        <!-- Selected file -->
+
+        <div
+            id="selected-file"
+            class="selected-file">
+
+            <strong>
+                Selected file
+            </strong>
+
+            <div
+                id="file-name"
+                class="file-name">
+            </div>
+
+        </div>
+
+
+        <!-- Information -->
+
+        <div class="info">
+
+            Your file does not need to follow a specific
+            store or product naming system. We'll identify
+            the relevant columns from your file.
+
+        </div>
+
+
+        <!-- Error -->
+
+        <div
+            id="error"
+            class="error">
+        </div>
+
+
+        <!-- Loading -->
+
+        <div
+            id="loading"
+            class="loading">
+
+            Checking your file...
+
+        </div>
+
+
+        <!-- Continue -->
+
+        <div class="button-area">
+
+            <button
+                id="continue-button"
+                class="continue"
+                onclick="uploadFile()"
+                disabled>
+
+                Check my data →
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+let selectedFile = null;
+
+
+/* File selected */
+
+document
+    .getElementById("file-input")
+    .addEventListener("change", function(event) {
+
+        const file = event.target.files[0];
+
+        if (!file) {
+            return;
+        }
+
+        selectedFile = file;
+
+        document
+            .getElementById("file-name")
+            .textContent = file.name;
+
+        document
+            .getElementById("selected-file")
+            .style.display = "block";
+
+        document
+            .getElementById("continue-button")
+            .disabled = false;
+
+        document
+            .getElementById("error")
+            .style.display = "none";
+    });
+
+
+/* Upload */
+
+async function uploadFile() {
+
+    if (!selectedFile) {
+        showError("Please choose a sales file first.");
+        return;
+    }
+
+
+    const button =
+        document.getElementById("continue-button");
+
+    const loading =
+        document.getElementById("loading");
+
+
+    button.disabled = true;
+
+    button.textContent = "Checking...";
+
+    loading.style.display = "block";
+
+
+    const formData = new FormData();
+
+    formData.append("file", selectedFile);
+
+
+    try {
+
+        const response = await fetch(
+            "/upload-file",
+            {
+                method: "POST",
+                body: formData
+            }
+        );
+
+
+        const data = await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                data.error ||
+                "Could not process the file."
+            );
+
+        }
+
+
+        /* Save uploaded file information */
+
+        sessionStorage.setItem(
+            "uploadData",
+            JSON.stringify(data)
+        );
+
+
+        /* Go to Data Check */
+
+        window.location.href =
+            "/data-check";
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        showError(
+            error.message ||
+            "Something went wrong while uploading the file."
+        );
+
+        button.disabled = false;
+
+        button.textContent =
+            "Check my data →";
+
+        loading.style.display = "none";
+    }
+
+}
+
+
+/* Error */
+
+function showError(message) {
+
+    const error =
+        document.getElementById("error");
+
+    error.textContent = message;
+
+    error.style.display = "block";
+}
+
+
+/* Back */
+
+function goBack() {
+
+    window.location.href = "/options";
+
+}
+
+</script>
+
+</body>
+
+</html>
